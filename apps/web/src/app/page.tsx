@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ApiStatus } from "@/components/system/api-status";
 
 const mediaTypes = [
   {
@@ -59,6 +60,7 @@ export default function Home() {
           </nav>
 
           <div className="ml-auto flex items-center gap-3">
+            <ApiStatus />
             <button
               type="button"
               className="hidden h-9 w-80 items-center rounded-lg border border-border bg-surface px-3 text-left text-sm text-muted transition-colors hover:border-border-strong sm:flex"
