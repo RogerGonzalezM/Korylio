@@ -207,7 +207,7 @@ export default function Home() {
       </main>
 
       <footer className="mx-auto flex max-w-7xl items-center justify-between px-5 py-8 text-xs text-muted-soft lg:px-8">
-        <span>Universal Media Tracker</span>
+        <span>Korylio</span>
         <span>Early development</span>
       </footer>
     </div>

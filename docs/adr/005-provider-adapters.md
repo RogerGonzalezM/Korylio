@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-Universal Media Tracker dependerá de distintos proveedores externos según el tipo de contenido.
+Korylio dependerá de distintos proveedores externos según el tipo de contenido.
 
 Ejemplos iniciales:
 
@@ -18,7 +18,7 @@ Las APIs externas tienen modelos, identificadores, límites, licencias y políti
 
 ## Decision
 
-Ningún proveedor externo definirá directamente el modelo interno de Universal Media Tracker.
+Ningún proveedor externo definirá directamente el modelo interno de Korylio.
 
 Cada integración se encapsulará detrás de un adapter.
 

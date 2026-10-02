@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-Universal Media Tracker necesita:
+Korylio necesita:
 
 - Relaciones complejas.
 - Integridad referencial.

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Universal Media Tracker",
-    template: "%s · Universal Media Tracker",
+    default: "Korylio",
+    template: "%s · Korylio",
   },
   description:
     "Track, organize and explore everything you watch, read, play and listen to.",

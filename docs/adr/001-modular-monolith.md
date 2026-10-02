@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-Universal Media Tracker requiere múltiples dominios relacionados: catálogo, búsqueda, biblioteca, tracking, diary, listas, estadísticas, relaciones, imports y usuarios.
+Korylio requiere múltiples dominios relacionados: catálogo, búsqueda, biblioteca, tracking, diary, listas, estadísticas, relaciones, imports y usuarios.
 
 Separarlos inicialmente en microservicios aumentaría la complejidad operativa sin una necesidad demostrada de escalado independiente.
 
