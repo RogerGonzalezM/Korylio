@@ -1,4 +1,6 @@
 import {
+  boolean,
+  index,
   pgTable,
   text,
   timestamp,
@@ -16,12 +18,29 @@ export const platform = pgTable(
 
     slug: varchar("slug", { length: 100 }).notNull(),
 
-    createdAt: timestamp("created_at", { withTimezone: true })
+    kind: varchar("kind", { length: 50 }).notNull().default("other"),
+
+    description: text("description"),
+
+    isActive: boolean("is_active").notNull().default(true),
+
+    createdAt: timestamp("created_at", {
+      withTimezone: true,
+    })
       .notNull()
       .defaultNow(),
+
+    updatedAt: timestamp("updated_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (table) => [
     uniqueIndex("platform_slug_uq").on(table.slug),
+
+    index("platform_kind_idx").on(table.kind),
   ],
 );
 

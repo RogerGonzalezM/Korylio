@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 
 import {
   check,
+  foreignKey,
   index,
   integer,
   pgTable,
@@ -12,6 +13,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { mediaItem } from "./media-item.js";
+import { mediaUnit } from "./media-unit.js";
 import { organization } from "./organization.js";
 import { person } from "./person.js";
 
@@ -26,15 +28,15 @@ export const credit = pgTable(
         onDelete: "cascade",
       }),
 
-    personId: uuid("person_id")
-      .references(() => person.id, {
-        onDelete: "cascade",
-      }),
+    mediaUnitId: uuid("media_unit_id"),
 
-    organizationId: uuid("organization_id")
-      .references(() => organization.id, {
-        onDelete: "cascade",
-      }),
+    personId: uuid("person_id").references(() => person.id, {
+      onDelete: "cascade",
+    }),
+
+    organizationId: uuid("organization_id").references(() => organization.id, {
+      onDelete: "cascade",
+    }),
 
     role: varchar("role", { length: 100 }).notNull(),
 
@@ -49,11 +51,17 @@ export const credit = pgTable(
   (table) => [
     index("credit_media_item_id_idx").on(table.mediaItemId),
 
+    index("credit_media_unit_id_idx").on(table.mediaUnitId),
+
     index("credit_person_id_idx").on(table.personId),
 
-    index("credit_organization_id_idx").on(
-      table.organizationId,
-    ),
+    index("credit_organization_id_idx").on(table.organizationId),
+
+    foreignKey({
+      name: "credit_media_unit_same_media_fk",
+      columns: [table.mediaItemId, table.mediaUnitId],
+      foreignColumns: [mediaUnit.mediaItemId, mediaUnit.id],
+    }).onDelete("cascade"),
 
     check(
       "credit_subject_xor_check",
@@ -69,6 +77,22 @@ export const credit = pgTable(
           and
           ${table.organizationId} is not null
         )
+      `,
+    ),
+
+    check(
+      "credit_role_not_blank_check",
+      sql`
+        char_length(trim(${table.role})) > 0
+      `,
+    ),
+
+    check(
+      "credit_position_non_negative_check",
+      sql`
+        ${table.position} is null
+        or
+        ${table.position} >= 0
       `,
     ),
   ],

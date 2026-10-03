@@ -1,5 +1,6 @@
 export * from "./media-type.js";
 export * from "./media-item.js";
+export * from "./media-item-title.js";
 export * from "./external-identifier.js";
 export * from "./person.js";
 export * from "./organization.js";

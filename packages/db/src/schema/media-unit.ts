@@ -2,9 +2,11 @@ import { sql } from "drizzle-orm";
 
 import {
   check,
+  date,
   foreignKey,
   index,
   integer,
+  jsonb,
   pgTable,
   text,
   timestamp,
@@ -14,6 +16,8 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { mediaItem } from "./media-item.js";
+
+export type MediaUnitAttributes = Record<string, unknown>;
 
 export const mediaUnit = pgTable(
   "media_unit",
@@ -34,6 +38,10 @@ export const mediaUnit = pgTable(
 
     title: text("title"),
 
+    originalTitle: text("original_title"),
+
+    description: text("description"),
+
     number: varchar("number", {
       length: 50,
     }),
@@ -41,6 +49,13 @@ export const mediaUnit = pgTable(
     sequence: integer("sequence"),
 
     durationSeconds: integer("duration_seconds"),
+
+    releaseDate: date("release_date"),
+
+    attributes: jsonb("attributes")
+      .$type<MediaUnitAttributes>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
 
     createdAt: timestamp("created_at", {
       withTimezone: true,
@@ -56,29 +71,18 @@ export const mediaUnit = pgTable(
       .$onUpdate(() => new Date()),
   },
   (table) => [
-    index("media_unit_media_item_id_idx").on(
-      table.mediaItemId,
-    ),
+    index("media_unit_media_item_id_idx").on(table.mediaItemId),
 
-    index("media_unit_parent_unit_id_idx").on(
-      table.parentUnitId,
-    ),
+    index("media_unit_parent_unit_id_idx").on(table.parentUnitId),
 
-    unique("media_unit_media_item_id_id_uq").on(
-      table.mediaItemId,
-      table.id,
-    ),
+    index("media_unit_release_date_idx").on(table.releaseDate),
+
+    unique("media_unit_media_item_id_id_uq").on(table.mediaItemId, table.id),
 
     foreignKey({
       name: "media_unit_parent_same_media_fk",
-      columns: [
-        table.mediaItemId,
-        table.parentUnitId,
-      ],
-      foreignColumns: [
-        table.mediaItemId,
-        table.id,
-      ],
+      columns: [table.mediaItemId, table.parentUnitId],
+      foreignColumns: [table.mediaItemId, table.id],
     }).onDelete("cascade"),
 
     check(
